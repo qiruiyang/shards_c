@@ -1,6 +1,6 @@
 CC=gcc
 CFLAGS= -Wall -I./include `pkg-config --cflags --libs glib-2.0`
-VERSION=-std=c11
+#VERSION=-std=c11
 ODIR=obj
 AR=ar
 ARFLGAS=rcs
@@ -21,13 +21,19 @@ lib/libSHARDS.a: obj/SHARDS.o obj/shard_utils.o
 shards_test: obj/shards_test.o lib/libSHARDS.a
 	$(CC) -g  $^ $(CFLAGS) $(VERSION) -o $@
 
+trace_replay: obj/trace_replay.o lib/libSHARDS.a
+	$(CC) -g  $^ $(CFLAGS) $(VERSION) -o $@
+
 shards_test2: obj/shards_test.o lib/libSHARDS.so
 	$(CC) -g $^ $(CFLAGS) $(VERSION) -o $@
 
-obj/shards_test.o: src/shards_test.c 
+obj/shards_test.o: src/shards_test.c
 	$(CC) -g -c  src/shards_test.c $(CFLAGS)  $(VERSION) -o $@
 
-obj/SHARDS.o : src/SHARDS.c 
+obj/trace_replay.o: src/trace_replay.c
+	$(CC) -g -c  src/trace_replay.c $(CFLAGS)  $(VERSION) -o $@
+
+obj/SHARDS.o : src/SHARDS.c
 	$(CC) -g -fPIC -c  $(CFLAGS) $(LFLAGS)  src/SHARDS.c -o $@
 
 obj/shard_utils.o: src/shards_utils.c
